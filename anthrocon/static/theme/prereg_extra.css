@@ -1,0 +1,23 @@
+body {
+    background-color: #090909;
+    background-image: none;
+}
+
+.masthead {
+    padding-top: 30.86%;
+}
+
+.landing-title {
+    color: white;
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio:2),
+only screen and (min--moz-device-pixel-ratio:2),
+only screen and (-moz-min-device-pixel-ratio:2),
+only screen and (-o-min-device-pixel-ratio:2/1),
+only screen and (min-device-pixel-ratio:2),
+only screen and (min-resolution:192dpi),
+only screen and (min-resolution:2dppx) {
+    .masthead { background-image: url("../theme/banner_2x.png"); }
+}

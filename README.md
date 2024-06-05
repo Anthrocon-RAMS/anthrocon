@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/magfest/anthrocon.svg)](https://travis-ci.org/magfest/anthrocon) [![Coverage Status](https://coveralls.io/repos/github/magfest/anthrocon/badge.svg?branch=master)](https://coveralls.io/github/magfest/anthrocon?branch=master)
