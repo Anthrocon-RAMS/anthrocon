@@ -68,6 +68,7 @@
         <th>Mature Panels</th>
         <th>Mature Tables</th>
         <th>Agent Notes</th>
+        <th>Check-In Notes</th>
         <th>Admin Notes</th>
         <th>Check-{{ checkout|yesno("Out,In") }}</th>
       </tr></thead>
@@ -82,6 +83,7 @@
         <td>{{ app.panels_ad }}</td>
         <td>{{ app.tables_ad }}</td>
         <td>{{ app.agent_notes }}</td>
+        <td>{{ app.check_in_notes }}</td>
         <td>{{ app.admin_notes }}</td>
         <td>
           {% if not app.checked_in %}
