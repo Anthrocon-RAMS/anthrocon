@@ -15,3 +15,5 @@ c.MENU.append_menu_item(
         MenuItem(name='Art Show Import', href='../anthrocon/art_show_import'),
     ])
 )
+
+c.ART_SHOW_DELIVERY_OPTS = [(key, val) for key, val in c.ART_SHOW_DELIVERY_OPTS if key != c.BY_MAIL]

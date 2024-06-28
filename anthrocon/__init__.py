@@ -9,6 +9,7 @@ from anthrocon._version import __version__  # noqa: F401
 from .config import config
 
 from . import models  # noqa: F401,E402,F403
+from . import model_checks  # noqa: F401,E402,F403
 from . import automated_emails  # noqa: F401
 
 mount_site_sections(config['module_root'])
