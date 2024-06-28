@@ -1,4 +1,4 @@
-FROM ghcr.io/magfest/ubersystem:main
+FROM ghcr.io/anthrocon-rams/rams:main
 ENV uber_plugins=["anthrocon"]
 
 # install plugins
