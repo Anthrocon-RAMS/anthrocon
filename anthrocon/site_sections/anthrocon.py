@@ -80,7 +80,7 @@ class Root:
                 )
                 model_instances['attendee'] = Attendee()
                 model_instances['attendee'].placeholder = True
-                model_instances['attendee'].badge_status == c.NOT_ATTENDING
+                model_instances['attendee'].badge_status = c.NOT_ATTENDING
 
             model_instances['app'].attendee = model_instances['attendee']
             model_instances['app'].last_synced['art_show_import'] = datetime.now(UTC).isoformat()
