@@ -12,8 +12,8 @@ Thank you for taking part in the Anthrocon 2024 Art Show. Your reservation is co
     <li>Mature Half-Table: {{ app.tables_ad }}</li>
     <li>Display Name: {{ app.banner_name }}</li>
     <li>Artist Code: {{ app.artist_id }}</li>
-    <li>{% if app.banner_name_ad %}Display Name (Mature): {{ app.banner_name_ad }}{% endif %}</li>
-    <li>{% if app.artist_id_ad %}Artist Code (Mature): {{ app.artist_id_ad }}{% endif %}</li>
+    {% if app.banner_name_ad %}<li>Display Name (Mature): {{ app.banner_name_ad }}</li>{% endif %}
+    {% if app.artist_id_ad %}<li>Artist Code (Mature): {{ app.artist_id_ad }}</li>{% endif %}
 </ul>
 Please contact me immediately if any corrections or updates are necessary, or if you have any questions, by replying to this email.
 </p>
