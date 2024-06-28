@@ -5,28 +5,24 @@
 <h2> CSV Table Imports </h2>
 This attempts to import a csv file for the art show. <strong>Please do not refresh this page. THIS PAGE IS FOR EXPERTS ONLY.</strong>
 
-<form action="import_model" method="post" enctype="multipart/form-data">
+<form action="import_art_show_models" method="post" enctype="multipart/form-data">
     <input type="file" name="model_import" /><br />
     <input type="submit" value="Upload" />
 </form>
 <br/>
-{% if attendees %}
+{% if models_imported %}
         <div class="control-group"><h4>Imported Data</h4></div>
     <table class="table table-striped datatable">
     <thead><tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Type</th>
-        <th>When</th>
     </tr></thead>
-{% for attendee in attendees %}
+{% for model in models_imported %}
     <tr>
         <td id="uuid">
-            {{ attendee.id }}
+            {{ model.id }}
         </td>
-        <td id="name">{{ attendee|form_link }}</td>
-        <td id="type">{{ attendee.type }} {{ attendee.badge_type_label }}</td>
-        <td id="when">{{ attendee.when }} {{ attendee.registered }}</td>
+        <td id="name">{{ model|form_link }}</td>
     </tr>
 {% endfor %}
 </table>
