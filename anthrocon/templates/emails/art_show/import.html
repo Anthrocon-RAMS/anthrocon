@@ -1,0 +1,80 @@
+<html>
+<head></head>
+<body>
+<p>Hello {{ app.artist_or_full_name }},</p>
+
+<p>
+Thank you for taking part in the Anthrocon 2024 Art Show. Your reservation is confirmed for the following:
+<ul>
+    <li>General Wall Space: {{ app.panel }}</li>
+    <li>General Half-Table: {{ app.tables }}</li>
+    <li>Mature Wall Space: {{ app.panels_ad }}</li>
+    <li>Mature Half-Table: {{ app.tables_ad }}</li>
+    <li>Display Name: {{ app.banner_name }}</li>
+    <li>Artist Code: {{ app.artist_id }}</li>
+    {% if app.banner_name_ad %}<li>Display Name (Mature): {{ app.banner_name_ad }}</li>{% endif %}
+    {% if app.artist_id_ad %}<li>Artist Code (Mature): {{ app.artist_id_ad }}</li>{% endif %}
+</ul>
+Please contact me immediately if any corrections or updates are necessary, or if you have any questions, by replying to this email.
+</p>
+
+<p>
+    <a href="https://docs.google.com/document/d/1L4GmQYZHgWVeL_BSJTPky8n-zgyJbYC0Yz-v1XJSscc/edit" target="_blank">Please read the general
+    instructions at &lt;https://is.gd/ACArtShowPreparations&gt;</a> about how to prepare your artwork, and what to do at the con.
+</p>
+
+<p>
+    This year, we are excited to introduce a new online system to enter artwork information for the Bid Sheets! (If you are using paper forms 
+    that were mailed to some artists upon request, there's no need also to use the online form, but entering your artwork info online will 
+    save time later on.) If you are attending the con, you will make things easier at check-in if you enter your artwork information in advance. 
+    Agents must make sure their clients have entered the info, or enter it themselves.
+</p>
+
+<p>
+    You may enter your pieces on <a href="{{ c.URL_BASE }}/art_show_applications/edit?id={{ app.id }}" target="_blank">your personalized 
+    reservation page at &lt;{{ c.URL_BASE }}/art_show_applications/edit?id={{ app.id }}&gt;</a>. We recommend bookmarking this page or 
+    saving this email in case you need to add or change pieces later. You can add a piece by clicking the "Add Piece" button and filling 
+    out its title, what gallery you will display it in, price (if the piece will be for sale), and artwork medium, then clicking "Save."
+</p>
+
+<p>
+    Each piece you've saved will be shown in a list, along with the information you filled in. You can edit a piece by clicking the blue 
+    pencil icon next to the piece data, or you can delete a piece by clicking the red "x" icon instead.
+</p>
+
+<p>
+    Once you believe you're done filling out piece information, click "Confirm Current Pieces." This will send us an email letting us know 
+    that your Bid Sheets are ready to print, and send you a list of your pieces to use as reference when preparing your artwork piece labels. 
+    Doing this <strong>does not lock your piece information</strong> - you can edit your pieces up until you check in with us at the con, at 
+    which time we'll give you the printed bid sheets to attach to your artwork. Just please re-confirm your pieces once you believe you are 
+    done editing them.
+</p>
+
+<p>If you have any questions about the system or encounter any errors, please let me know by replying to this email.</p>
+
+<p>
+    We have a crew of dedicated volunteers who are eager to put on a good Art Show, but we can always use more help. If you've already agreed 
+    to volunteer, thank you! Otherwise, if you can spare an hour or two at the con, please volunteer. If you work 18 hours or more, we will 
+    give you a free membership for next year. (Hours worked during setup and teardown count extra toward the total.)
+</p>
+
+<p>
+    Don't forget, we will award ribbons for the best works as judged by Anthrocon's chairman and staff and the Art Show Director, as well as 
+    selected by popular vote. And, among the many events at the con, the Art Show will be hosting a festive Artists and Dealers Reception on 
+    Friday night, July 5. This is your chance to meet and socialize with fellow artists, and invited dealers, sponsors and staff. Feel free 
+    to "dress up" if you can, or even wear a mask or costume! When you check in at the Art Show, you will receive an invitation to the 
+    reception, so I hope to see you there.
+</p>
+
+<p>
+    Safe travels,
+    <br/><br/>&nbsp;&nbsp;PeterCat
+</p>
+
+<p>
+    --
+<br/>PeterCat &lt;artshow@anthrocon.org&gt;&nbsp;&nbsp;&nbsp;Anthrocon Art Show Director
+307-ARTYFUR (+1 307 278 9387)&nbsp;&nbsp;&nbsp;https://www.anthrocon.org/artshow
+</p>
+</body>
+</html>
