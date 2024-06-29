@@ -44,6 +44,8 @@ class Root:
         col_dict = {}
         state_lookup = {region.code.removeprefix('US-'): region.name for region in list(
             pycountry.subdivisions.get(country_code='US'))}
+        province_lookup = {region.code.removeprefix('CA-'): region.name for region in list(
+            pycountry.subdivisions.get(country_code='CA'))}
 
         for key, model in model_dict.items():
             col_dict[key] = {col.name: getattr(model, col.name) for col in model.__table__.columns}
@@ -119,6 +121,10 @@ class Root:
                 model_instances['app'].country = "United States"
                 state = row.pop('app_region')
                 model_instances['app'].region = state_lookup.get(state, '')
+            elif country.lower() == 'CANADA'.lower():
+                model_instances['app'].country = country.title()
+                province = row.pop('app_region')
+                model_instances['app'].region = province_lookup.get(province, '')
             else:
                 model_instances['app'].country = country.title()
 
