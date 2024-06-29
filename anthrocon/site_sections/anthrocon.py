@@ -118,7 +118,7 @@ class Root:
             if country == 'USA':
                 model_instances['app'].country = "United States"
                 state = row.pop('app_region')
-                model_instances['app'].region = state_lookup[state]
+                model_instances['app'].region = state_lookup.get(state, '')
             else:
                 model_instances['app'].country = country.title()
 
