@@ -8,7 +8,7 @@ import traceback
 import csv
 import random
 import six
-import pypsutil
+import pycountry
 import cherrypy
 import threading
 from collections import defaultdict
@@ -42,6 +42,8 @@ class Root:
             'app': ArtShowApplication,
         }
         col_dict = {}
+        state_lookup = {region.code.removeprefix('US-'): region.name for region in list(
+            pycountry.subdivisions.get(country_code='US'))}
 
         for key, model in model_dict.items():
             col_dict[key] = {col.name: getattr(model, col.name) for col in model.__table__.columns}
@@ -109,6 +111,16 @@ class Root:
             else:
                 model_instances['attendee'].first_name = orig_first_name
                 model_instances['attendee'].last_name = orig_last_name
+
+            # Process country/state
+            country = row.pop('app_country')
+
+            if country == 'USA':
+                model_instances['app'].country = "United States"
+                state = row.pop('app_region')
+                model_instances['app'].region = state_lookup[state]
+            else:
+                model_instances['app'].country = country.title()
 
             for key in model_dict.keys():
                 session.add(model_instances[key])
