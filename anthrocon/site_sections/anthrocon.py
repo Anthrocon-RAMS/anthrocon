@@ -111,21 +111,23 @@ class Root:
                     model_instances['attendee'].last_name = orig_last_name
                     model_instances['attendee'].first_name = orig_preferred_name
             else:
-                model_instances['attendee'].first_name = orig_first_name
-                model_instances['attendee'].last_name = orig_last_name
+                if orig_first_name:
+                    model_instances['attendee'].first_name = orig_first_name
+                if orig_last_name:
+                    model_instances['attendee'].last_name = orig_last_name
 
             # Process country/state
-            country = row.pop('app_country')
+            country = row.pop('app_country', None)
 
             if country == 'USA':
                 model_instances['app'].country = "United States"
                 state = row.pop('app_region')
                 model_instances['app'].region = state_lookup.get(state, '')
-            elif country.lower() == 'CANADA'.lower():
+            elif country and country.lower() == 'CANADA'.lower():
                 model_instances['app'].country = country.title()
                 province = row.pop('app_region')
                 model_instances['app'].region = province_lookup.get(province, '')
-            else:
+            elif country:
                 model_instances['app'].country = country.title()
 
             for key in model_dict.keys():
