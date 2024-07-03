@@ -1,3 +1,4 @@
+from pockets import classproperty
 from residue import CoerceUTF8 as UnicodeText
 
 from uber.config import c
@@ -9,6 +10,22 @@ from uber.utils import get_static_file_path
 @Session.model_mixin
 class ArtShowApplication:
     agent_notes = Column(UnicodeText)
+
+
+@Session.model_mixin
+class ArtShowBidder:
+    @classproperty
+    def required_fields(cls):
+        return {
+            'badge_printed_name': "badge name or nickname",
+            'first_name': "first name",
+            'last_name': "last_name",
+            'country': "country",
+            'region': "region or city",
+            'address1': "street address",
+            'zip_code': "zip code or postal code",
+            'cellphone': "phone number",
+        }
 
 
 @Session.model_mixin
