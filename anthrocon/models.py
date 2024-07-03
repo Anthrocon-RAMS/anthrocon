@@ -1,10 +1,17 @@
 from pockets import classproperty
 from residue import CoerceUTF8 as UnicodeText
+from sqlalchemy.types import Integer, Boolean
 
 from uber.config import c
+from uber.decorators import presave_adjustment
 from uber.models import Session
-from uber.models.types import DefaultColumn as Column, MultiChoice
+from uber.models.types import DefaultColumn as Column, Choice
 from uber.utils import get_static_file_path
+
+
+@Session.model_mixin
+class Attendee:
+    regfox_id = Column(UnicodeText)
 
 
 @Session.model_mixin
@@ -14,9 +21,22 @@ class ArtShowApplication:
 
 @Session.model_mixin
 class ArtShowBidder:
+    phone_type = Column(Choice(c.PHONE_TYPE_OPTS), default=c.MOBILE)
+    share_email = Column(Boolean, default=False)
+    share_address = Column(Boolean, default=False)
+    pickup_time_acknowledged = Column(Boolean, default=False)
+
+    @presave_adjustment
+    def zfill_bidder_num(self):
+        if not self.bidder_num:
+            return
+        base_bidder_num = ArtShowBidder.strip_bidder_num(self.bidder_num)
+        self.bidder_num = self.bidder_num[:2] + str(base_bidder_num).zfill(3)
+
     @classproperty
     def required_fields(cls):
         return {
+            'regfox_id': "registrant ID or number",
             'badge_printed_name': "badge name or nickname",
             'first_name': "first name",
             'last_name': "last_name",
