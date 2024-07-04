@@ -23,13 +23,47 @@ from sqlalchemy import text
 
 from uber.badge_funcs import badge_consistency_check
 from uber.config import c
-from uber.decorators import all_renderable, csv_file, public, site_mappable
-from uber.models import Attendee, ArtShowApplication, Session, UTCDateTime
+from uber.decorators import all_renderable, csv_file, public, site_mappable, xlsx_file
+from uber.models import Attendee, ArtShowApplication, ArtShowBidder, ArtShowPiece, Session, UTCDateTime
 from uber.tasks.health import ping
 
 
 @all_renderable()
 class Root:
+    @csv_file
+    def square_bidder_export(self, out, session):
+        out.writerow(["First Name", "Surname", "Company Name", "Email Address", "Phone Number",
+                      "Street Address 1", "Street Address 2", "City", "State", "Postal Code",
+                      "Reference ID", "Birthday", "Email Subscription Status"])
+        for bidder in session.query(ArtShowBidder).all():
+            attendee = bidder.attendee
+            out.writerow([
+                attendee.first_name, attendee.last_name, "", attendee.email,
+                attendee.cellphone, attendee.address1, attendee.address2,
+                attendee.city, attendee.region, attendee.zip_code,
+                "BN" + bidder.bidder_num[2:], "", ""
+            ])
+
+    @xlsx_file
+    def square_piece_export(self, out, session):
+        out.writerow("")
+        out.writerow(["Token", "Item Name", "Variation Name", "SKU", "Description", "Category",
+                      "SEO Title", "SEO Description", "Permalink", "Weight (lb)", "Price",
+                      "Online Sale Price", "Sellable", "Stockable", "Skip Detail Screen in POS",
+                      "Option Name 1", "Option Value 1", "Enabled ART SHOW", "Current Quantity ART SHOW",
+                      "New Quantity ART SHOW", "Stock Alert Enabled ART SHOW", "Stock Alert Count ART SHOW",
+                      "Price ART SHOW", "Enabled CON STORE", "Current Quantity CON STORE", "New Quantity CON STORE",
+                      "Stock Alert Enabled CON STORE", "Stock Alert Count CON STORE", "Price CON STORE",
+                      "Enabled REGISTRATION", "Current Quantity REGISTRATION", "New Quantity REGISTRATION",
+                      "Stock Alert Enabled REGISTRATION", "Stock Alert Count REGISTRATION", "Price REGISTRATION"])
+        for piece in session.query(ArtShowPiece).join(ArtShowApplication).all():
+            square_piece_id = piece.artist_and_piece_id.replace('-', '')
+            out.writerow([
+                "", f"{square_piece_id} {piece.name}", "Regular", square_piece_id, piece.app_display_name, "Department",
+                "", "", "", "", "variable", "", "", "", "Y", "", "", "Y", "", "", "", "", "", "N", "", "", "", "", "",
+                "N", "", "", "", "", ""
+            ])
+
     def art_show_import(self, message='', all_instances=[]):
         return {
             'message': message,
