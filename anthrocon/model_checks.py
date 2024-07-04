@@ -13,7 +13,7 @@ from uber.jinja import template_overrides
 from uber.utils import add_opt, mount_site_sections, static_overrides, localized_now
 
 
-ArtShowApplication.required = [('website', 'Website URL')]
+ArtShowApplication.required = []
 
 @validation.ArtShowBidder
 def must_select_phone_type(bidder):
