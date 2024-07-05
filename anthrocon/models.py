@@ -31,7 +31,7 @@ class ArtShowBidder:
         if not self.bidder_num:
             return
         base_bidder_num = ArtShowBidder.strip_bidder_num(self.bidder_num)
-        self.bidder_num = self.bidder_num[:2] + str(base_bidder_num).zfill(3)
+        self.bidder_num = self.bidder_num[:2].upper() + str(base_bidder_num).zfill(3)
 
     @classproperty
     def required_fields(cls):
