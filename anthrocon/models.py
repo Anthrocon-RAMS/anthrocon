@@ -37,6 +37,7 @@ class ArtShowBidder:
     def required_fields(cls):
         return {
             'regfox_id': "registrant ID or number",
+            'bidder_num': "bidder number",
             'badge_printed_name': "badge name or nickname",
             'first_name': "first name",
             'last_name': "last_name",
