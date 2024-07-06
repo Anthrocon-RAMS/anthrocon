@@ -32,7 +32,7 @@ from uber.tasks.health import ping
 class Root:
     @csv_file
     def square_bidder_export(self, out, session):
-        out.writerow(["First Name", "Surname", "Company Name", "Email Address", "Phone Number",
+        out.writerow(["First Name", "Last Name", "Company Name", "Email Address", "Phone Number",
                       "Street Address 1", "Street Address 2", "City", "State", "Postal Code",
                       "Reference ID", "Birthday", "Email Subscription Status"])
         for bidder in session.query(ArtShowBidder).all():
