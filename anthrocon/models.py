@@ -112,6 +112,9 @@ class ArtShowPiece:
     
     @property
     def artist_and_piece_id(self):
+        if not self.app:
+            return '???-' + str(self.piece_id)
+
         piece_id = self.piece_id
         if self.app.highest_piece_id > 99:
             piece_id = f"{piece_id:03}"
