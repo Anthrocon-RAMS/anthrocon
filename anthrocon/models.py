@@ -3,9 +3,10 @@ from residue import CoerceUTF8 as UnicodeText
 from sqlalchemy.types import Integer, Boolean
 
 from uber.config import c
+from uber.custom_tags import readable_join
 from uber.decorators import presave_adjustment
 from uber.models import Session
-from uber.models.types import DefaultColumn as Column, Choice
+from uber.models.types import DefaultColumn as Column, Choice, MultiChoice
 from uber.utils import get_static_file_path
 
 
@@ -18,6 +19,21 @@ class Attendee:
 class ArtShowApplication:
     agent_notes = Column(UnicodeText)
     photography_ok = Column(Boolean)
+    special_requests = Column(MultiChoice(c.ARTIST_SPECIAL_REQUEST_OPTS))
+    special_requests_text = Column(UnicodeText)
+
+    @property
+    def special_requests_repr(self):
+        if not self.special_requests and not self.special_requests_text:
+            return "None"
+        
+        text = ""
+        if self.special_requests:
+            text = readable_join(self.special_requests_labels)
+            if self.special_requests_text:
+                return text + f". Details/Other: {self.special_requests_text}"
+            return text
+        return f"Other: {self.special_requests_text}"
 
 
 @Session.model_mixin
