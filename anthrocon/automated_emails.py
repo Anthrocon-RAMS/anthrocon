@@ -12,4 +12,6 @@ ArtShowAppEmailFixture(
     ident='art_show_import')
 
 AutomatedEmail.email_overrides.extend([
-    ('art_show_confirm', 'subject', f"OFFICIAL Anthrocon Art Show reservation acknowledgement"),])
+    ('art_show_confirm', 'subject', f"OFFICIAL Anthrocon Art Show reservation acknowledgement"),
+    ('art_show_confirm', 'replyto', [c.ART_SHOW_EMAIL]),
+    ('art_show_confirm', 'needs_approval', False)])

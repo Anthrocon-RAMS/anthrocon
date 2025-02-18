@@ -21,6 +21,7 @@ class ArtShowApplication:
     photography_ok = Column(Boolean)
     special_requests = Column(MultiChoice(c.ARTIST_SPECIAL_REQUEST_OPTS))
     special_requests_text = Column(UnicodeText)
+    payout_method_text = Column(UnicodeText)
 
     @property
     def special_requests_repr(self):
