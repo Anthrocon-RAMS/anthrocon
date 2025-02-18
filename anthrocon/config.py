@@ -19,3 +19,5 @@ c.MENU.append_menu_item(
 )
 
 c.ART_SHOW_DELIVERY_OPTS = [(key, val) for key, val in c.ART_SHOW_DELIVERY_OPTS if key != c.BY_MAIL]
+request_order = [c.ELECTRICITY, c.WIDE_ART, c.TALL_ART, c.FLOOR_SPACE, c.NEIGHBOR_REQUEST, c.MOVING]
+c.ARTIST_SPECIAL_REQUEST_OPTS.sort(key=lambda x: request_order.index(x[0]))

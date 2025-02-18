@@ -10,3 +10,6 @@ ArtShowAppEmailFixture(
     'art_show/import.html',
     lambda a: a.created <= c.ART_SHOW_REG_START,
     ident='art_show_import')
+
+AutomatedEmail.email_overrides.extend([
+    ('art_show_confirm', 'subject', f"OFFICIAL Anthrocon Art Show reservation acknowledgement"),])

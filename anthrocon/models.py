@@ -17,6 +17,7 @@ class Attendee:
 @Session.model_mixin
 class ArtShowApplication:
     agent_notes = Column(UnicodeText)
+    photography_ok = Column(Boolean)
 
 
 @Session.model_mixin

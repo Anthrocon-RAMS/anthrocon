@@ -1,0 +1,100 @@
+<html>
+<head></head>
+<body>
+
+Hello {{ app.artist_or_full_name }},
+
+<p>
+    Thank you for sending in your Anthrocon Art Show reservation. I have recorded your request for the following:
+	
+    <ul>
+        <li><strong>General Wall Space</strong>: {{ app.panels }}</li>
+        <li><strong>General Half-Table</strong>: {{ app.tables }}</li>
+        <li><strong>Mature Wall Space</strong>: {{ app.panels_ad }}</li>
+        <li><strong>Mature Half-Table</strong>: {{ app.tables_ad }}</li>
+    </ul>
+If this is incorrect, please <a href="{{ c.URL_BASE }}/art_show_applications/edit?id={{ app.id }}" target="_blank">update your request here</a>.
+</p>
+
+<p>
+    Please note, at this point I have not assigned any space, I have only recorded your request.
+    After the guaranteed-space deadline, I will make the space assignments on a "round-robin" basis: one space to everyone,
+    then a second space for those who wanted more than one, then a third, and so forth, until we run out of space.
+    Since we are now in a convention center and have much more space, I don't anticipate any problem filling most artists' requests.
+</p>
+
+<p>
+    A few weeks before the convention, I will email you a confirmation of the space you have been assigned,
+    along with a link and instructions for entering your artwork information online. We will print bid sheets and forms when you
+    check-in at the Art Show.
+</p>
+
+<p>
+    Please review the following contact information carefully, and if anything needs correcting,
+    please do so <a href="{{ c.URL_BASE }}/art_show_applications/edit?id={{ app.id }}" target="_blank">here</a>.
+    If you have any questions, please tell me by email or telephone.
+</p>
+
+<p>Thanks again, and I hope you do well in the Art Show!</p>
+
+<p>
+    --
+    <br/>PeterCat &#60;<a href="mailto:artshow@anthrocon.org" target="_blank">artshow@anthrocon.org</a>&#62;
+    <br/>Anthrocon Art Show Director
+    <br/>307-ARTYFUR (+1 307 278 9387)
+    <br/><a href="https://www.anthrocon.org/artshow" target="_blank">https://www.anthrocon.org/artshow</a>
+</p>
+
+<p>
+    ========
+    <br/>ARTIST INFO:
+</p>
+<p>
+    Name:	{{ app.attendee.full_name }}
+    <br/>Mailing Address:	{{ app.address1 }} {{ app.address2 }}
+    <br/>{{ app.city }}, {{ app.region }} {{ app.zip_code }}
+    <br/>{{ app.country }}
+</p>
+
+<p>Phone:	{{ app.attendee.cellphone }}</p>
+
+<p>Email:	{{ app.attendee.email }}</p>
+
+{% if app.website %}<p>Website/Social Media: {{ app.website }}</p>{% endif %}
+
+<p>
+    Banner Name: {{ app.display_name }}
+    {% if app.mature_display_name != app.display_name %}<br/>Banner Name (Mature): {{ app.mature_display_name }}{% endif %}
+</p>
+
+
+<br/><p>BUSINESS INFO:</p>
+<p>
+    Payment method:	{{ app.payout_method_label }}
+    <br/>Payable to:	{{ app.check_payable or app.attendee.full_name }}
+</p>
+
+
+<br/><p>RESERVATION DETAILS:</p>
+<p>
+    General Wall Space: {{ app.panels }}
+    <br/>General Half-Table: {{ app.tables }}
+    <br/>Mature Wall Space: {{ app.panels_ad }}
+    <br/>Mature Half-Table: {{ app.tables_ad }}
+</p>
+
+<p>Art Delivery: {{ app.delivery_method_label }}</p>
+
+<p>Contact At-Con: {{ app.contact_at_con }}</p>
+
+<p>Photography Permission: Background photography {{ app.photography_ok|yesno("OK,Not OK") }}</p>
+
+{% if app.special_requests or app.special_requests_text %}<p>Special Requests: {{ app.special_requests_repr }}</p>{% endif %}
+
+<p>
+    --
+    <br/><a href="{{ c.ART_SHOW_RULES_URL }}" target="_blank">Anthrocon Art Show Rules</a>
+</p>
+
+</body>
+</html>
