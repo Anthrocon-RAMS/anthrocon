@@ -4,4 +4,4 @@ ENV uber_plugins=["anthrocon"]
 # install plugins
 COPY . plugins/anthrocon/
 
-RUN uv pip install --system -r plugins/anthrocon/requirements.txt
+RUN $HOME/.local/bin/uv pip install --system -r plugins/anthrocon/requirements.txt
