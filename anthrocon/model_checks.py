@@ -26,7 +26,7 @@ ArtShowApplication.required = [('zip_code', 'ZipCode'),
 
 @validation.Attendee
 def cellphone_valid(attendee):
-    if invalid_phone_number(attendee.cellphone):
+    if attendee.cellphone and invalid_phone_number(attendee.cellphone):
         return 'Your cellphone number was not a valid 10-digit US phone number. ' \
             'Please include a country code (e.g. +44) for international numbers.'
 
