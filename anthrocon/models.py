@@ -24,6 +24,10 @@ class ArtShowApplication:
     payout_method_text = Column(UnicodeText)
 
     @property
+    def editable(self):
+        return self.status in [c.UNAPPROVED, c.WAITLISTED]
+
+    @property
     def special_requests_repr(self):
         if not self.special_requests and not self.special_requests_text:
             return "None"
