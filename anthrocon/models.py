@@ -81,9 +81,9 @@ class ArtShowPiece:
         pdf.image(get_static_file_path('bidsheet.png'), x=0 + xplus, y=-2 + yplus, w=305)
         pdf.set_font(normal_font_name, size=17)
         if self.gallery == c.GENERAL:
-            pdf.set_xy(153 + xplus, 9 + yplus)
+            pdf.set_xy(115 + xplus, 9 + yplus)
         else:
-            pdf.set_xy(153 + xplus, 20 + yplus)
+            pdf.set_xy(115 + xplus, 20 + yplus)
         pdf.cell(132, 22, txt="O", ln=1, align="L")
         pdf.set_font("3of9", size=25)
         pdf.set_xy(178 + xplus, 8 + yplus)
