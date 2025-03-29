@@ -83,17 +83,17 @@ class ArtShowPiece:
 
         # Gallery, Piece ID and Barcode
         pdf.image(get_static_file_path('bidsheet.png'), x=0 + xplus, y=-2 + yplus, w=305)
-        pdf.set_font(normal_font_name, size=17)
+        pdf.set_font(normal_font_name, size=15)
+        pdf.set_xy(154 + xplus, 15 + yplus)
         if self.gallery == c.GENERAL:
-            pdf.set_xy(115 + xplus, 9 + yplus)
+            pdf.cell(132, 22, txt="G", ln=1, align="L")
         else:
-            pdf.set_xy(115 + xplus, 20 + yplus)
-        pdf.cell(132, 22, txt="O", ln=1, align="L")
+            pdf.cell(132, 22, txt="M", ln=1, align="L")
         pdf.set_font("3of9", size=25)
         pdf.set_xy(178 + xplus, 8 + yplus)
         pdf.cell(132, 22, txt=self.barcode_data, ln=1, align="C")
         pdf.set_font(bold_font_name, size=8)
-        pdf.set_xy(178 + xplus, 26 + yplus)
+        pdf.set_xy(178 + xplus, 27 + yplus)
         pdf.cell(132, 12, txt=self.artist_and_piece_id, ln=1, align="C")
 
         # Artist, Title, Media
@@ -103,11 +103,11 @@ class ArtShowPiece:
         pdf.cell(230, 24,
                     txt=(self.app_display_name),
                     ln=1, align="C")
-        pdf.set_xy(10 + xplus, 64 + yplus)
+        pdf.set_xy(10 + xplus, 65 + yplus)
         set_fitted_font_size(self.name, max_size=260)
         pdf.cell(230, 24, txt=self.name, ln=1, align="C")
         pdf.set_font(normal_font_name, size=12)
-        pdf.set_xy(10 + xplus, 86 + yplus)
+        pdf.set_xy(10 + xplus, 87 + yplus)
         pdf.cell(
             230, 24,
             txt=f'Print ({self.print_run_num} of {self.print_run_total})' if self.type == c.PRINT else self.media,
