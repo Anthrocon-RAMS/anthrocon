@@ -96,37 +96,60 @@ class ArtShowPiece:
         pdf.set_xy(178 + xplus, 27 + yplus)
         pdf.cell(132, 12, txt=self.artist_and_piece_id, ln=1, align="C")
 
-        # Artist, Title, Media
+        # Artist
         pdf.set_font(normal_font_name, size=12)
         set_fitted_font_size(self.app_display_name, max_size=260)
         pdf.set_xy(10 + xplus, 41 + yplus)
-        pdf.cell(230, 24,
-                    txt=(self.app_display_name),
-                    ln=1, align="C")
+        pdf.cell(230, 24, txt=(self.app_display_name), ln=1, align="C")
+        
+        # Title
         pdf.set_xy(10 + xplus, 65 + yplus)
         set_fitted_font_size(self.name, max_size=260)
         pdf.cell(230, 24, txt=self.name, ln=1, align="C")
+        
+        # Media
         pdf.set_font(normal_font_name, size=12)
         pdf.set_xy(10 + xplus, 87 + yplus)
-        pdf.cell(
-            230, 24,
-            txt=f'Print ({self.print_run_num} of {self.print_run_total})' if self.type == c.PRINT else self.media,
-            ln=1, align="C"
-        )
+        pdf.cell(230, 24, txt=self.media, ln=1, align="C")
 
-        # Type, Minimum Bid, QuickSale Price
-        pdf.set_font(bold_font_name, size=12)
-        if self.type == c.PRINT:
-            pdf.set_xy(235 + xplus, 43 + yplus)
-        else:
-            pdf.set_xy(235 + xplus, 33 + yplus)
-        pdf.cell(53, 24, txt="x", ln=1, align="L")
+        # Type: Print/Original
+        # Display "Original", "Print", "Print X (Open Edition)", or "Print X of Y"
+        
+        if self.type == c.ORIGINAL:
+            pdf.set_xy(235 + xplus, 39 + yplus)
+            pdf.set_font(normal_font_name, size=12)
+            pdf.cell(53, 24, txt="Original", ln=1, align="L")
+        else: # PRINT
+            # X of Y entered, display "Print (X of Y"
+            if self.print_run_num > 0 and self.print_run_total > 0:
+                pdf.set_font(normal_font_name, size=9)
+
+                pdf.set_xy(235 + xplus, 33 + yplus)
+                pdf.cell(53, 24, txt=f"Print", ln=1, align="L")
+
+                pdf.set_xy(235 + xplus, 42 + yplus)
+                pdf.cell(53, 24, txt=f"({self.print_run_num} of {self.print_run_total})", ln=1, align="L")
+            # Only X entered, display "Print X (Open Edition)"
+            elif self.print_run_num > 0:
+                pdf.set_font(normal_font_name, size=9)
+
+                pdf.set_xy(235 + xplus, 33 + yplus)
+                pdf.cell(53, 24, txt=f"Print {self.print_run_num}", ln=1, align="L")
+
+                pdf.set_xy(235 + xplus, 42 + yplus)
+                pdf.cell(53, 24, txt=f"Open Edition", ln=1, align="L")
+            # No X of Y entered, display "Print"
+            else:
+                pdf.set_xy(235 + xplus, 39 + yplus)
+                pdf.set_font(normal_font_name, size=12)
+                pdf.cell(53, 24, txt="Print", ln=1, align="L")
+
+        # Minimum Bid, QuickSale Price
         pdf.set_font(bold_font_name, size=12)
         pdf.set_xy(228 + xplus, 70 + yplus)
         pdf.cell(53, 14, txt=str(self.opening_bid) if self.valid_for_sale else 'NFS', ln=1, align="R")
         pdf.set_xy(228 + xplus, 92 + yplus)
-        pdf.cell(
-            53, 14, txt=str(self.quick_sale_price) if self.valid_quick_sale else 'NFS', ln=1, align="R")
+        pdf.cell(53, 14, txt=str(self.quick_sale_price) if self.valid_quick_sale else 'NFS', ln=1, align="R")
         
     @property
     def barcode_data(self):
