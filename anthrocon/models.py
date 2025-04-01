@@ -120,8 +120,8 @@ class ArtShowPiece:
             pdf.set_font(normal_font_name, size=12)
             pdf.cell(53, 24, txt="Original", ln=1, align="L")
         else: # PRINT
-            # X of Y entered, display "Print (X of Y"
-            if self.print_run_num > 0 and self.print_run_total > 0:
+            # X of Y entered, display "Print X of Y"
+            if self.print_run_num and self.print_run_total:
                 pdf.set_font(normal_font_name, size=9)
 
                 pdf.set_xy(235 + xplus, 33 + yplus)
@@ -130,7 +130,7 @@ class ArtShowPiece:
                 pdf.set_xy(235 + xplus, 42 + yplus)
                 pdf.cell(53, 24, txt=f"({self.print_run_num} of {self.print_run_total})", ln=1, align="L")
             # Only X entered, display "Print X (Open Edition)"
-            elif self.print_run_num > 0:
+            elif self.print_run_num:
                 pdf.set_font(normal_font_name, size=9)
 
                 pdf.set_xy(235 + xplus, 33 + yplus)
