@@ -1,0 +1,3 @@
+Hello {{ app.artist_or_full_name }},
+Thank you for submitting a space request for the {{ c.EVENT_NAME }} Art Show. Unfortunately, all available space has been claimed by other artists, so your request is being held on the waitlist. If space becomes available for you, I will notify you via email.
+{{ c.ART_SHOW_EMAIL_SIGNATURE }}
