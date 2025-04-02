@@ -18,9 +18,10 @@ class Attendee:
 @Session.model_mixin
 class ArtShowApplication:
     agent_notes = Column(UnicodeText)
-    photography_ok = Column(Boolean)
+    photography_ok = Column(Boolean, default=False)
     special_requests = Column(MultiChoice(c.ARTIST_SPECIAL_REQUEST_OPTS))
     special_requests_text = Column(UnicodeText)
+    requested_more_space = Column(Boolean, default=False)
     payout_method_text = Column(UnicodeText)
 
     @property

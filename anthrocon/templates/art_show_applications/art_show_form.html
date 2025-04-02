@@ -248,6 +248,20 @@
 </div>
 {% endif %}
 
+{% if admin_area %}
+<div class="row g-sm-3">
+  <div class="col-12">
+  <div class="form-text">Requested More Space?</div>
+    <div class="form-check mb-3">
+      <label class="form-check-label">
+        <input type="checkbox" name="requested_more_space" class="form-check-input"{% if app.requested_more_space %} checked="checked"{% endif %} value="1"/>
+        <strong>Yes</strong>, this artist requested more space than they initially received.
+      </label>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 <div class="row g-sm-3">
   <div class="col-12 col-sm-6 mb-3">
     <label for="website" class="form-text">Website/Social Media</label>
