@@ -1,0 +1,89 @@
+<html>
+<head></head>
+<body>
+<p>
+Hello {{ app.artist_or_full_name }},
+</p><p>
+Thank you for taking part in the {{ c.EVENT_NAME }} 2025 Art Show.
+{% if app.requested_more_space %}
+	Your reservation is confirmed, but I'm sorry I must inform you that because a great many artists have requested space, I'm unable to grant you all the space you've requested. Space was allocated in a &quot;round-robin&quot; fashion for all artists who submitted their requests by March 31: one space to everyone, then a second space for those who wanted more than one, then a third, and so forth, until space ran out.
+	</p><p>
+	You have been granted:
+{% else %}
+	Your reservation is confirmed for:
+{% endif %}
+</p>
+<ul>
+{% if app.panels %}<li>General Wall Space: <strong>{{ app.panels }}</strong></li>{% endif %}
+{% if app.tables %}<li>General Half-Table: <strong>{{ app.tables }}</strong></li>{% endif %}
+{% if app.panels_ad %}<li>Mature Wall Space: <strong>{{ app.panels_ad }}</strong></li>{% endif %}
+{% if app.tables_ad %}<li>Mature Half-Table: <strong>{{ app.tables_ad }}</strong></li>{% endif %}
+</ul>
+{% if app.requested_more_space %}
+	<p>I have recorded your original request offline, so if there are enough cancellations, I may be able to grant you additional space. I'll let you know if that happens.</p>
+{% endif %}
+<p>
+Banner Name{% if app.mature_display_name != app.display_name %} (General){% endif %}: {{ app.display_name }}
+<br/>Artist Code{% if app.mature_display_name != app.display_name %} (General){% endif %}: {{ app.artist_id }}
+{% if app.mature_display_name != app.display_name %}
+	<br/>Banner Name (Mature): {{ app.mature_display_name }}
+{% endif %}
+{% if app.artist_id_ad %}
+	<br/>Artist Code (Mature): {{ app.artist_id_ad }}
+{% endif %}
+</p><p>
+
+{% if app.website %}<p>Website/Social Media: {{ app.website }}
+	<br/><strong><em>We forgot to ask on the form if it's OK to share a link to your website/social media on the list of participating artists to be posted on the Anthrocon web site &mdash; <a href="mailto:artshow@anthrocon.org" target="_blank">please email me and let me know!</a></em></strong></p>
+{% endif %}
+
+{% if app.special_requests_text %}
+	<p>Special Requests:
+	<br/>{{ app.special_requests_text }}
+	{% if app.admin_notes %}<br/>&gt;&gt;&nbsp;{% else %}</p>{% endif %}
+{% endif %}
+{% if app.admin_notes %}
+	{% if not app.special_requests_text %}<p>{% endif %}
+	<strong><em>{{ app.admin_notes }}</em></strong></p>
+{% endif %}
+
+{% if app.delivery_method == c.AGENT %}
+	{% if app.agent_notes %}
+		<p>Agent: {{ app.agent_notes }}</p>
+	{% else %}
+		<p>When you can, <a href="mailto:artshow@anthrocon.org" target="_blank">please email me the name and contact information for your agent.</a></p>
+	{% endif %}
+{% elif app.delivery_method == c.AGENT_PRESENT %}
+	{% if app.agent_notes %}
+		<p>Assistant: {{ app.agent_notes }}</p>
+	{% else %}
+		<p>When you can, <a href="mailto:artshow@anthrocon.org" target="_blank">please email me the name of the person authorized to handle your artwork.</a></p>
+	{% endif %}
+{% endif %}
+
+<p>
+You're able to correct or update much of your information on
+<a href="{{ c.URL_BASE }}/art_show_applications/edit?id={{ app.id }}" target="_blank">your personalized reservation page here</a>.
+Whenever you wish, you may enter bid sheet details about your pieces there as well. Add a piece by clicking the &quot;Add Piece&quot; button and filling out its title, what gallery you will display it in, price (if the piece will be for sale), and artwork medium, then clicking &quot;Save.&quot; Each piece you've saved will be shown in a list, along with the information you filled in. Edit a piece by clicking the blue pencil icon next to the piece details, or delete a piece by clicking the red &quot;x&quot; icon instead. You can do this up until you check in with us at the con, at which time we'll print the bid sheets and give them to you to attach to your artwork.
+</p><p>
+If you have any questions about the system or encounter any errors, please let me know by replying to this email.
+</p><p>
+Thanks,
+</p><p style="margin-left: 5%">PeterCat</p>
+<p>Anthrocon Art Show Director
+<br/>&lt;<a href="mailto:artshow@anthrocon.org" target="_blank">artshow@anthrocon.org</a>&gt;
+<br/>307-ARTYFUR (+1 307 278 9387)
+<br/><a href="https://www.anthrocon.org/artshow" target="_blank">https://www.anthrocon.org/artshow</a>
+
+<br/><a href="{{ c.ART_SHOW_RULES_URL }}" target="_blank">Anthrocon Art Show Rules</a>
+{% if app.panels %}
+	<br/>--
+	<br/>P.S. If you can, please consider donating a piece (print or original) for the Anthrocon 2025 Charity Auction and Raffle. Our charity this year is Nose 2 Tail Cat Rescue, a 501(c)(3) non-profit, 100% donation and volunteer-run, no-kill cat rescue. Read over the Charity Auction/Raffle information at <a href="https://anthrocon.org/charity" target="_blank">&lt;https://anthrocon.org/charity&gt;</a> for details on how to donate. (Please note that the Charity Auction/Raffle is a separate event from either of the Art Show auctions; contact &lt;<a href="mailto:charity@anthrocon.org" target="_blank">charity@anthrocon.org</a>&gt; with questions about the Charity Auction and Raffle.)
+	{% if c.BEFORE_CONBOOK_DEADLINE %}
+		<br/>--
+		<br/>P.P.S. The Anthrocon conbook needs submissions! It's a fantastic forum for artists to showcase their talents to thousands of members of the fandom. For full information see <a href="https://www.anthrocon.org/conbook" target="_blank">&lt;https://www.anthrocon.org/conbook&gt;</a>.
+	{% endif %}
+{% endif %}
+</p>
+</body>
+</html>

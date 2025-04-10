@@ -1,0 +1,10 @@
+Hello {{ app.artist_or_full_name }},
+
+Thank you for submitting a space request for the {{ c.EVENT_NAME }} Art Show. I must regretfully inform you that we are unable to accept your request this year.
+
+Best Wishes,
+
+	PeterCat
+--
+PeterCat <artshow@anthrocon.org>         Anthrocon Art Show Director
+307-ARTYFUR (+1 307 278 9387)      https://www.anthrocon.org/artshow

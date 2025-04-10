@@ -1,5 +1,8 @@
 Hello {{ app.artist_or_full_name }},
-Thank you for submitting a space request for the {{ c.EVENT_NAME }} Art Show. Unfortunately, all available space has been claimed by other artists, so your request is being held on the waitlist. If space becomes available for you, I will notify you via email.
+
+Thank you for submitting a space request for the {{ c.EVENT_NAME }} Art Show. I’m sorry I must inform you that all available space has been claimed by other artists, so your request is being held on the waitlist in case of cancellations. If space becomes available for you, I will notify you via email.
+
+Until then, you may view and change your request at {{ c.URL_BASE }}/art_show_applications/edit?id={{ app.id }}.
 
 Thanks,
 	PeterCat
