@@ -52,7 +52,8 @@ sqlite_reflect_kwargs = {
 
 
 def upgrade():
-    op.add_column('art_show_piece', sa.Column('artist_name', sa.Unicode(), server_default='', nullable=False))
+    pass
+    #op.add_column('art_show_piece', sa.Column('artist_name', sa.Unicode(), server_default='', nullable=False))
 
 
 def downgrade():
