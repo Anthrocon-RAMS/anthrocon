@@ -24,8 +24,29 @@ from sqlalchemy import text
 from uber.badge_funcs import badge_consistency_check
 from uber.config import c
 from uber.decorators import all_renderable, csv_file, public, site_mappable, xlsx_file
-from uber.models import Attendee, ArtShowApplication, ArtShowBidder, ArtShowPiece, Session, UTCDateTime
+from uber.models import Attendee, ArtShowApplication, ArtShowBidder, ArtShowPiece, Choice, MultiChoice, Session, UTCDateTime
 from uber.tasks.health import ping
+
+
+def _handle_preferred_name(row, model_instances):
+    orig_preferred_name = row.pop('attendee_preferred_name', None)
+    orig_first_name = row.pop('attendee_first_name', None)
+    orig_last_name = row.pop('attendee_last_name', None)
+
+    preferred_name_split = orig_preferred_name.rsplit(' ', 1)
+    if len(preferred_name_split) > 1:
+        preferred_last_name = preferred_name_split[1]
+        model_instances['attendee'].first_name = preferred_name_split[0]
+        if preferred_last_name == orig_last_name:
+            model_instances['attendee'].last_name = orig_last_name
+            model_instances['attendee'].legal_name = orig_first_name
+        else:
+            model_instances['attendee'].last_name = preferred_name_split[1]
+            model_instances['attendee'].legal_name = orig_first_name + " " + orig_last_name
+    else:
+        model_instances['attendee'].legal_name = orig_first_name
+        model_instances['attendee'].last_name = orig_last_name
+        model_instances['attendee'].first_name = orig_preferred_name
 
 
 @all_renderable()
@@ -64,6 +85,45 @@ class Root:
                 "N", "", "", "", "", ""
             ])
 
+    @csv_file
+    def art_show_export(self, out, session):
+        app_fields = ['import_id', 'created', 'address1', 'address2', 'city', 'region', 'zip_code', 'country',
+                      'website', 'status', 'artist_id', 'banner_name', 'artist_id_ad', 'banner_name_ad',
+                      'panels', 'tables', 'panels_ad', 'tables_ad', 'locations', 'agent_notes',
+                      'check_payable', 'payout_method', 'check_in_notes', 'contact_at_con', 'admin_notes']
+        attendee_fields = ['last_name', 'first_name', 'legal_name', 'email', 'cellphone']
+
+        header_row = []
+        header_row.extend(['attendee_' + field_name for field_name in attendee_fields])
+        header_row.extend(['app_' + field_name for field_name in app_fields])
+        out.writerow(header_row)
+
+        for app in session.query(ArtShowApplication).outerjoin(ArtShowApplication.attendee):
+            row = []
+            if app.attendee:
+                row.extend([getattr(app.attendee, key, '') for key in attendee_fields])
+            else:
+                row.extend(['N/A', 'N/A', '', 'N/A', ''])
+
+            for key in app_fields:
+                if key == 'import_id':
+                    row.append(app.id)
+                else:
+                    col = getattr(ArtShowApplication, key)
+
+                    if isinstance(col.type, Choice):
+                        row.append(getattr(app, col.name + '_label'))
+                    elif isinstance(col.type, MultiChoice):
+                        row.append(' / '.join(getattr(app, col.name + '_labels')))
+                    elif isinstance(col.type, UTCDateTime):
+                        val = getattr(app, col.name)
+                        row.append(val.strftime('%Y-%m-%d %H:%M:%S') if val else '')
+                    elif isinstance(col.type, JSONB):
+                        row.append(json.dumps(getattr(app, col.name)))
+                    else:
+                        row.append(getattr(app, col.name))
+            out.writerow(row)
+
     def art_show_import(self, message='', all_instances=[]):
         return {
             'message': message,
@@ -100,7 +160,11 @@ class Root:
                         model_instances[key] = session.query(model_dict[key]).filter(
                             model_dict[key].external_id == {'art_show_import': import_ids[key]}).one()
                     except NoResultFound:
-                        pass
+                        try:
+                            model_instances[key] = session.query(model_dict[key]
+                                                                 ).filter(model_dict[key].id == import_ids[key]).one()
+                        except NoResultFound:
+                            pass
                     except Exception as e:
                         log.error(str(e))
                         session.rollback()
@@ -125,30 +189,8 @@ class Root:
             model_instances['attendee'].last_synced['art_show_import'] = datetime.now(UTC).isoformat()
 
             # Swap the preferred and first names where appropriate
-            orig_first_name = row.pop('attendee_first_name', None)
-            orig_last_name = row.pop('attendee_last_name', None)
-            orig_preferred_name = row.pop('attendee_preferred_name', None)
-
-            if orig_preferred_name:
-                preferred_name_split = orig_preferred_name.rsplit(' ', 1)
-                if len(preferred_name_split) > 1:
-                    preferred_last_name = preferred_name_split[1]
-                    model_instances['attendee'].first_name = preferred_name_split[0]
-                    if preferred_last_name == orig_last_name:
-                        model_instances['attendee'].last_name = orig_last_name
-                        model_instances['attendee'].legal_name = orig_first_name
-                    else:
-                        model_instances['attendee'].last_name = preferred_name_split[1]
-                        model_instances['attendee'].legal_name = orig_first_name + " " + orig_last_name
-                else:
-                    model_instances['attendee'].legal_name = orig_first_name
-                    model_instances['attendee'].last_name = orig_last_name
-                    model_instances['attendee'].first_name = orig_preferred_name
-            else:
-                if orig_first_name:
-                    model_instances['attendee'].first_name = orig_first_name
-                if orig_last_name:
-                    model_instances['attendee'].last_name = orig_last_name
+            if row.get('attendee_preferred_name', None):
+                _handle_preferred_name(row, model_instances)
 
             # Process country/state
             country = row.pop('app_country', None)
