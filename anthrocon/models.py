@@ -153,11 +153,7 @@ class ArtShowPiece:
         pdf.cell(53, 14, txt=str(self.opening_bid) if self.valid_for_sale else 'NFS', ln=1, align="R")
         pdf.set_xy(228 + xplus, 92 + yplus)
         pdf.cell(53, 14, txt=str(self.quick_sale_price) if self.valid_quick_sale else 'NFS', ln=1, align="R")
-        
-    @property
-    def barcode_data(self):
-        return "".join(self.artist_and_piece_id.split("-"))
-    
+
     @property
     def artist_and_piece_id(self):
         if not self.app:

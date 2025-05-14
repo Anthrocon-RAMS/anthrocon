@@ -97,11 +97,10 @@ class Root:
                       "Enabled REGISTRATION", "Current Quantity REGISTRATION", "New Quantity REGISTRATION",
                       "Stock Alert Enabled REGISTRATION", "Stock Alert Count REGISTRATION", "Price REGISTRATION"])
         for piece in session.query(ArtShowPiece).join(ArtShowApplication).all():
-            square_piece_id = piece.artist_and_piece_id.replace('-', '')
             out.writerow([
-                "", f"{square_piece_id} {piece.name}", "Regular", square_piece_id, piece.app_display_name, "Department",
-                "", "", "", "", "variable", "", "", "", "Y", "", "", "Y", "", "", "", "", "", "N", "", "", "", "", "",
-                "N", "", "", "", "", ""
+                "", f"{piece.artist_and_piece_id} {piece.name}", "Regular", piece.artist_and_piece_id,
+                piece.app_display_name, "Department", "", "", "", "", "variable", "", "", "", "Y", "",
+                "", "Y", "", "", "", "", "", "N", "", "", "", "", "", "N", "", "", "", "", ""
             ])
 
     @csv_file
