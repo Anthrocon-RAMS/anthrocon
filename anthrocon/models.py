@@ -90,7 +90,7 @@ class ArtShowPiece:
             pdf.cell(132, 22, txt="G", ln=1, align="L")
         else:
             pdf.cell(132, 22, txt="M", ln=1, align="L")
-        pdf.set_font("3of9", size=25)
+        pdf.set_font("3of9", size=27)
         pdf.set_xy(178 + xplus, 8 + yplus)
         pdf.cell(132, 22, txt=self.barcode_data, ln=1, align="C")
         pdf.set_font(bold_font_name, size=8)
