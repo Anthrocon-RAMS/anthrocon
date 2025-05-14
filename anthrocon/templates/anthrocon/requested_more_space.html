@@ -1,0 +1,133 @@
+{% extends "base.html" %}{% set admin_area=True %}
+{% set title_text = "Requested More Space" %}
+{% block content %}
+<script type="text/javascript">
+  var updateAll = function() {
+    let bigData = ''
+    $('[id^=update_space_request_]').each(function() {
+      let serializedData = new URLSearchParams($(this).serialize());
+
+      if (bigData == '') {
+        bigData = 'csrf_token=' + serializedData.get('csrf_token')
+      }
+
+      bigData = bigData + '&id=' + serializedData.get('id')
+
+      for (const [key, value] of serializedData) {
+        if (key != 'csrf_token' && key != 'id') {
+          bigData = bigData + '&' + key + '_' + serializedData.get('id') + '=' + value
+        }
+      }
+    })
+    $.ajax({
+      method: 'POST',
+      url: 'update_all',
+      dataType: 'json',
+      data: bigData,
+      success: function (json) {
+        hideMessageBox();
+        var message = json.message;
+        if (json.success) {
+          $("#message-alert").addClass("alert-info").show().children('span').html(message);
+          window.scrollTo(0,0); setTimeout(() => { window.scrollTo(0, 0); }, 100);
+        } else {
+          showErrorMessage(message);
+        }
+      },
+      error: function () {
+          showErrorMessage('Unable to connect to server, please try again.');
+      }
+    });
+  }
+  $().ready(function () {
+    $('form[action="update_space_request"]').on('submit', function(event) {
+      event.preventDefault();
+      $.ajax({
+        type: 'POST',
+        url: $(this).attr("action"),
+        data: $(this).serialize(), 
+        success: function (json) {
+          hideMessageBox();
+          var message = json.message;
+          if (json.success) {
+            $("#message-alert").addClass("alert-info").show().children('span').html(message);
+            window.scrollTo(0,0); setTimeout(() => { window.scrollTo(0, 0); }, 100);
+          } else {
+            showErrorMessage(message);
+          }
+        },
+        error: function () {
+            showErrorMessage('Unable to connect to server, please try again.');
+        }
+      });
+    })
+  });
+</script>
+
+<h2>Requested More Space</h2>
+<div class="card card-body">
+  <table class="table table-hover datatable">
+    <thead><tr>
+        <th>Applied Date</th>
+        <th>Application</th>
+        <th>General Grids</th>
+        <th>Mature Grids</th>
+        <th>General Tables</th>
+        <th>Mature Tables</th>
+        <th>Locations</th>
+        <th>Requested More Space</th>
+        <th></th>
+    </tr></thead>
+    {% for app in apps %}
+        <tr>
+            <td data-order="{{ app.created|datetime_local("%Y/%m/%d/ %H:%M") }}">{{ app.created|datetime_local("%B %-m, %-I:%M %p") }}</td>
+            <td data-order="{{ app.display_name }}" data-search="{{ app.display_name }}"> <a href="../art_show_admin/form?id={{ app.id }}" target="_blank">
+                {{ app.display_name|default("?????") }}</a>
+            </td>
+            <td>
+                <select class="form-select" name="panels" form="update_space_request_{{ app.id }}">
+                {{ int_options(0, 30, app.panels) }}
+                </select>
+            </td>
+            <td>
+                <select class="form-select" name="panels_ad" form="update_space_request_{{ app.id }}">
+                {{ int_options(0, 30, app.panels_ad) }}
+                </select>
+            </td>
+            <td>
+                <select class="form-select" name="tables" form="update_space_request_{{ app.id }}">
+                {{ int_options(0, 30, app.tables) }}
+                </select>
+            </td>
+            <td>
+                <select class="form-select" name="tables_ad" form="update_space_request_{{ app.id }}">
+                {{ int_options(0, 30, app.tables_ad) }}
+                </select>
+            </td>
+            <td>
+              <input type="text" form="update_space_request_{{ app.id }}" class="form-control" name="locations" value="{{ app.locations }}" />
+            </td>
+            <td>
+                <input type="checkbox" form="update_space_request_{{ app.id }}" name="requested_more_space" class="form-check-input"{% if app.requested_more_space %} checked="checked"{% endif %} value="1"/>
+            </td>
+            <td>
+              <form id="update_space_request_{{ app.id }}" method="post" action="update_space_request">
+                {{ csrf_token() }}
+                <input type="hidden" name="id" value="{{ app.id }}" />
+                <button type="submit" class="btn btn-sm btn-primary update-button">
+                  <i class="fa fa-check"></i>
+                </button>
+              </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <div class="d-flex justify-content-end mt-3">
+      <div class="flex-grow-1"></div>
+      <div>
+        <button type="button" class="btn btn-primary" onClick="updateAll()">Update All</button>
+      </div>
+    </div>
+</div>
+
+{% endblock content %}

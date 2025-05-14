@@ -1,31 +1,19 @@
-import os
 import json
-import shlex
-import time
-import sys
-import subprocess
-import traceback
 import csv
-import random
 import six
 import pycountry
-import cherrypy
 import threading
 from collections import defaultdict
 from datetime import datetime
 
 from sqlalchemy.dialects.postgresql.json import JSONB
-from sqlalchemy.exc import IntegrityError, NoResultFound
+from sqlalchemy.exc import NoResultFound
 from pockets.autolog import log
 from pytz import UTC
-from sqlalchemy.types import Date, Boolean, Integer
-from sqlalchemy import text
 
-from uber.badge_funcs import badge_consistency_check
 from uber.config import c
-from uber.decorators import all_renderable, csv_file, public, site_mappable, xlsx_file
+from uber.decorators import all_renderable, ajax, csv_file, public, site_mappable, xlsx_file
 from uber.models import Attendee, ArtShowApplication, ArtShowBidder, ArtShowPiece, Choice, MultiChoice, Session, UTCDateTime
-from uber.tasks.health import ping
 
 
 def _handle_preferred_name(row, model_instances):
@@ -51,6 +39,37 @@ def _handle_preferred_name(row, model_instances):
 
 @all_renderable()
 class Root:
+    def requested_more_space(self, session):
+        apps = session.query(ArtShowApplication).filter(ArtShowApplication.requested_more_space == True
+                                                        ).order_by(ArtShowApplication.created)
+        return {
+            "apps": apps
+        }
+
+    @ajax
+    def update_space_request(self, session, message='', **params):
+        app = session.art_show_application(params)
+        session.commit()
+        return {'success': True,
+                'message': f"Updated {app.artist_or_full_name}'s space request."}
+
+    @ajax
+    def update_all(self, session, message='', **params):
+        if 'id' in params:
+            if isinstance(params.get('id'), six.string_types):
+                params['id'] = [params.get('id')]
+
+            for id in params.get('id'):
+                app_params = {key.replace(f'_{id}', ''): val for key, val in params.items() if f'_{id}' in key}
+                app_params['id'] = id
+                app = session.art_show_application(app_params)
+
+            session.commit()
+            message = "Updated all requests."
+
+            return {'success': True,
+                    'message': message}
+
     @csv_file
     def square_bidder_export(self, out, session):
         out.writerow(["First Name", "Last Name", "Company Name", "Email Address", "Phone Number",
