@@ -74,6 +74,8 @@ class ArtShowBidder:
 
 @Session.model_mixin
 class ArtShowPiece:
+    artist_name = Column(UnicodeText)
+
     def print_bidsheet(self, pdf, sheet_num, normal_font_name, bold_font_name, set_fitted_font_size):
         xplus = yplus = 0
 
@@ -99,9 +101,9 @@ class ArtShowPiece:
 
         # Artist
         pdf.set_font(normal_font_name, size=12)
-        set_fitted_font_size(self.app_display_name, max_size=260)
+        set_fitted_font_size(self.artist_name or self.app_display_name, max_size=260)
         pdf.set_xy(10 + xplus, 41 + yplus)
-        pdf.cell(230, 24, txt=(self.app_display_name), ln=1, align="C")
+        pdf.cell(230, 24, txt=(self.artist_name or self.app_display_name), ln=1, align="C")
         
         # Title
         pdf.set_xy(10 + xplus, 65 + yplus)
