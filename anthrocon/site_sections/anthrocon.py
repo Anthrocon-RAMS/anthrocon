@@ -105,11 +105,14 @@ class Root:
 
     @csv_file
     def art_show_export(self, out, session):
-        app_fields = ['import_id', 'created', 'address1', 'address2', 'city', 'region', 'zip_code', 'country',
-                      'website', 'status', 'artist_id', 'banner_name', 'artist_id_ad', 'banner_name_ad',
-                      'panels', 'tables', 'panels_ad', 'tables_ad', 'locations', 'agent_notes', 'check_payable',
-                      'payout_method', 'payout_method_text', 'check_in_notes', 'contact_at_con', 'admin_notes',
-                      'photography_ok', 'special_requests', 'special_requests_text', 'requested_more_space']
+        app_fields = ['import_id', 'created', 'status',
+                      'artist_id', 'artist_id_ad', 'artist_name', 'banner_name', 'banner_name_ad',
+                      'address1', 'address2', 'city', 'region', 'zip_code', 'country',
+                      'panels', 'tables', 'panels_ad', 'tables_ad', 'photography_ok', 'website', 'contact_at_con',
+                      'delivery_method', 'check_payable', 'payout_method', 'payout_method_text',
+                      'special_requests', 'special_requests_text', 'requested_more_space', 'locations',
+                      'agent_notes', 'check_in_notes', 'admin_notes',
+                      ]
         attendee_fields = ['last_name', 'first_name', 'legal_name', 'email', 'cellphone']
 
         header_row = []
