@@ -76,6 +76,19 @@ class ArtShowBidder:
 class ArtShowPiece:
     artist_name = Column(UnicodeText)
 
+    @property
+    def app_display_name(self):
+        if self.artist_name:
+            return self.artist_name
+
+        if not self.app:
+            return "???"
+
+        if self.gallery == c.MATURE:
+            return self.app.mature_display_name
+        else:
+            return self.app.display_name
+
     def print_bidsheet(self, pdf, sheet_num, normal_font_name, bold_font_name, set_fitted_font_size):
         xplus = yplus = 0
 
@@ -101,9 +114,9 @@ class ArtShowPiece:
 
         # Artist
         pdf.set_font(normal_font_name, size=12)
-        set_fitted_font_size(self.artist_name or self.app_display_name, max_size=260)
+        set_fitted_font_size(self.app_display_name, max_size=260)
         pdf.set_xy(12 + xplus, 51 + yplus)
-        pdf.cell(230, 24, txt=(self.artist_name or self.app_display_name), ln=1, align="C")
+        pdf.cell(230, 24, txt=(self.app_display_name), ln=1, align="C")
         
         # Title
         set_fitted_font_size(self.name, max_size=260)
