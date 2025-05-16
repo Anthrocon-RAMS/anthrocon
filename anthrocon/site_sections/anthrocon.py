@@ -86,22 +86,22 @@ class Root:
 
     @xlsx_file
     def square_piece_export(self, out, session):
-        out.writerow("")
-        out.writerow(["Token", "Item Name", "Variation Name", "SKU", "Description", "Category",
-                      "SEO Title", "SEO Description", "Permalink", "Weight (lb)", "Price",
-                      "Online Sale Price", "Sellable", "Stockable", "Skip Detail Screen in POS",
-                      "Option Name 1", "Option Value 1", "Enabled ART SHOW", "Current Quantity ART SHOW",
-                      "New Quantity ART SHOW", "Stock Alert Enabled ART SHOW", "Stock Alert Count ART SHOW",
-                      "Price ART SHOW", "Enabled CON STORE", "Current Quantity CON STORE", "New Quantity CON STORE",
-                      "Stock Alert Enabled CON STORE", "Stock Alert Count CON STORE", "Price CON STORE",
-                      "Enabled REGISTRATION", "Current Quantity REGISTRATION", "New Quantity REGISTRATION",
-                      "Stock Alert Enabled REGISTRATION", "Stock Alert Count REGISTRATION", "Price REGISTRATION"])
+        base_header = ["Item Name", "Variation Name", "SKU", "Description", "Price", "Categories",
+                       "Reporting Category", "Skip Detail Screen in POS", "Enabled Art Show",
+                       "Enabled Con Store", "Enabled Registration", "Enabled Advertising"]
+        blank_cols = ["Reference", "Token", "GTIN", "Item Type", "Weight (lb)", "Online Sale Price",
+                      "Social Media Link Title", "Social Media Link Description", "Modifier Set - Bidder #"
+                      "Archived", "Sellable", "Contains Alcohol", "Stockable", "Option Name 1", "Option Value 1"]
+        for dept in ["Advertising", "Art Show", "Con Store", "Registration"]:
+            blank_cols.extend([f"Current Quantity {dept}", f"New Quantity {dept}", f"Stock Alert Enabled {dept}",
+                               f"Stock Alert Count {dept}", f"Price {dept}"])
+        out.writerow(base_header + blank_cols)
+
         for piece in session.query(ArtShowPiece).join(ArtShowApplication).all():
-            out.writerow([
-                "", f"{piece.artist_and_piece_id} {piece.name}", "Regular", piece.artist_and_piece_id,
-                piece.app_display_name, "Department", "", "", "", "", "variable", "", "", "", "Y", "",
-                "", "Y", "", "", "", "", "", "N", "", "", "", "", "", "N", "", "", "", "", ""
-            ])
+            data = [f"{piece.artist_and_piece_id} {piece.name}", "Regular", piece.artist_and_piece_id,
+                    piece.app_display_name, "variable", "Department", "Department", "Y", "Y", "N", "N", "N"]
+            data.extend(["" for _ in range(len(blank_cols))])
+            out.writerow(data)
 
     @csv_file
     def art_show_export(self, out, session):
