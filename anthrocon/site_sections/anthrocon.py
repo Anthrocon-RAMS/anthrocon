@@ -90,7 +90,7 @@ class Root:
                        "Reporting Category", "Skip Detail Screen in POS", "Enabled Art Show",
                        "Enabled Con Store", "Enabled Registration", "Enabled Advertising"]
         blank_cols = ["Reference", "Token", "GTIN", "Item Type", "Weight (lb)", "Online Sale Price",
-                      "Social Media Link Title", "Social Media Link Description", "Modifier Set - Bidder #"
+                      "Social Media Link Title", "Social Media Link Description", "Modifier Set - Bidder #",
                       "Archived", "Sellable", "Contains Alcohol", "Stockable", "Option Name 1", "Option Value 1"]
         for dept in ["Advertising", "Art Show", "Con Store", "Registration"]:
             blank_cols.extend([f"Current Quantity {dept}", f"New Quantity {dept}", f"Stock Alert Enabled {dept}",
