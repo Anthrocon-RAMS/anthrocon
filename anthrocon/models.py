@@ -59,15 +59,12 @@ class ArtShowBidder:
     @classproperty
     def required_fields(cls):
         return {
-            'regfox_id': "registrant ID or number",
+            'badge_num': "badge number",
             'bidder_num': "bidder number",
             'badge_printed_name': "badge name or nickname",
             'first_name': "first name",
-            'last_name': "last_name",
-            'country': "country",
-            'region': "region or city",
-            'address1': "street address",
-            'zip_code': "zip code or postal code",
+            'last_name': "last name",
+            'email': "email address",
             'cellphone': "phone number",
         }
 
