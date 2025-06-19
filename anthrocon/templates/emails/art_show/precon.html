@@ -1,0 +1,66 @@
+<html>
+<head></head>
+<body>
+<p>
+Hello {{ app.artist_or_full_name }},
+</p><p>
+Thank you for taking part in the {{ c.EVENT_NAME_AND_YEAR }} Art Show. Your reservation is confirmed for the following:
+</p>
+<ul>
+{% if app.panels %}<li>General Wall Space: <strong>{{ app.panels }}</strong></li>{% endif %}
+{% if app.tables %}<li>General Half-Table: <strong>{{ app.tables }}</strong></li>{% endif %}
+{% if app.panels_ad %}<li>Mature Wall Space: <strong>{{ app.panels_ad }}</strong></li>{% endif %}
+{% if app.tables_ad %}<li>Mature Half-Table: <strong>{{ app.tables_ad }}</strong></li>{% endif %}
+</ul>
+{% if app.requested_more_space %}
+	<p>I have recorded your original request for more space offline, so if there are enough cancellations, I may be able to assign you additional space. I'll let you know if that happens before I travel to the con, but please ask when you check in at the Art Show.</p>
+{% endif %}
+<p>
+Banner Name{% if app.mature_display_name != app.display_name %} (General){% endif %}: {{ app.display_name }}
+<br/>Artist Code{% if app.mature_display_name != app.display_name %} (General){% endif %}: {{ app.artist_id }}
+{% if app.mature_display_name != app.display_name %}
+	<br/>Banner Name (Mature): {{ app.mature_display_name }}
+{% endif %}
+{% if app.artist_id_ad %}
+	<br/>Artist Code (Mature): {{ app.artist_id_ad }}
+{% endif %}
+
+{% if app.delivery_method == c.AGENT %}
+	{% if app.agent_notes %}
+		<p>Agent: {{ app.agent_notes }}</p>
+	{% else %}
+		<p><a href="mailto:artshow@anthrocon.org?subject=Art Show Agent Information" target="_blank">Please immediately email me the name and contact information for your agent to avoid delay for them at check-in.</a></p>
+	{% endif %}
+{% elif app.delivery_method == c.AGENT_PRESENT %}
+	{% if app.agent_notes %}
+		<p>Assistant: {{ app.agent_notes }}</p>
+	{% else %}
+		<p><a href="mailto:artshow@anthrocon.org?subject=Art Show Assistant Information" target="_blank">Please immediately email me the name of the person authorized to handle your artwork, to avoid delay for them at check-in.</a></p>
+	{% endif %}
+{% endif %}
+
+</p><p>
+Please contact me immediately if any corrections or updates are
+{% if app.requested_more_space %}
+necessary by replying to this email.
+{% else %}
+necessary, especially if you think you might not need all the space you've reserved. Of course, you're entitled to use it all if you need it, since you asked for it first, but there are a number of artists on the waiting list hoping to get any space that can be freed up. Simply reply to this email.
+{% endif %}
+</p><p>
+{# https://is.gd/ACArtShowPreparations #}
+<a href="https://docs.google.com/document/d/1L4GmQYZHgWVeL_BSJTPky8n-zgyJbYC0Yz-v1XJSscc/edit?usp=sharing" target="_blank">Please read the general instructions here</a> about how to prepare your artwork, and what to do at the con. Before the con, please enter the bid sheet information for your pieces on <a href="{{ c.URL_BASE }}/art_show_applications/edit?id={{ app.id }}" target="_blank">your personalized reservation page here</a>. We recommend bookmarking this page or saving this email in case you need to add or change pieces later. Instructions on how to enter the piece information are included in the instructions linked above. If you have any questions about the system or encounter any errors, please let me know by replying to this email.
+</p><p>
+We have a crew of dedicated volunteers who are eager to put on a good Art Show, but we can always use more help. If you've already agreed to volunteer, thank you! Otherwise, if you can spare an hour or two at the con, please volunteer. If you work 18 hours or more, we will give you a free membership for next year. To sign up, <a href="https://reg.anthrocon.org/apply/volunteer" target="_blank">login to your {{ c.EVENT_NAME }} registration account</a> and fill out the volunteer form.
+</p><p>
+Don't forget, we will award ribbons for the best works as judged by Anthrocon's chairman and staff and the Art Show Director, as well as selected by popular vote. And, among the many events at the con, the Art Show will be hosting a festive Artists and Dealers Reception on Friday night, July 4. This is your chance to meet and socialize with fellow artists, and invited dealers, ultrasponsors, supersponsors, and staff. Feel free to "dress up" if you can, or even wear a mask or costume! When you check in at the Art Show, you will receive an invitation to the reception, so I hope to see you there.
+</p><p>
+Safe travels,
+</p><p style="margin-left: 5%">PeterCat</p>
+<p>Anthrocon Art Show Director
+<br/>&lt;<a href="mailto:artshow@anthrocon.org" target="_blank">artshow@anthrocon.org</a>&gt;
+<br/>307-ARTYFUR (+1 307 278 9387)
+<br/><a href="https://www.anthrocon.org/artshow" target="_blank">https://www.anthrocon.org/artshow</a>
+
+<br/><a href="{{ c.ART_SHOW_RULES_URL }}" target="_blank">Anthrocon Art Show Rules</a>
+</body>
+</html>

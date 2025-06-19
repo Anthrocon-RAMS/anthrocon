@@ -6,10 +6,10 @@ from uber.models import Attendee, AutomatedEmail
 from uber.utils import before, days_before, days_after
 
 ArtShowAppEmailFixture(
-    'Your {EVENT_NAME} Art Show Reservation',
-    'art_show/import.html',
-    lambda a: a.created <= c.ART_SHOW_REG_START,
-    ident='art_show_import')
+    'Preparing for the {EVENT_NAME} Art Show',
+    'art_show/precon.html',
+    lambda a: a.status == c.APPROVED,
+    ident='art_show_precon')
 
 AutomatedEmail.email_overrides.extend([
     ('art_show_confirm', 'subject', f"OFFICIAL Anthrocon Art Show reservation acknowledgement"),
