@@ -322,3 +322,18 @@
     {% endif %}
   </div>
 </div>
+<div class="row g-sm-3">
+  <div class="col-12">
+  <div class="form-text">OK To Share Website/Social Media?</div>
+    {% if readonly %}
+    {{ app.share_website_social|yesno("OK,Not OK") }} to share website/social media
+    {% else %}
+    <div class="form-check mb-3">
+      <label class="form-check-label">
+        <input type="checkbox" name="share_website_social" class="form-check-input"{% if app.share_website_social %} checked="checked"{% endif %} value="1"/>
+        <strong>Yes</strong>, the information I entered above under Website/Social Media is okay to publish.
+      </label>
+    </div>
+    {% endif %}
+  </div>
+</div>

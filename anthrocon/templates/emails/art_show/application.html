@@ -89,6 +89,8 @@ If this is incorrect, please <a href="{{ c.URL_BASE }}/art_show_applications/edi
 
 <p>Photography Permission: Background photography {{ app.photography_ok|yesno("OK,Not OK") }}</p>
 
+<p>Share Website/Social: {{ app.photography_ok|yesno("OK,Not OK") }} to share website/social media information</p>
+
 {% if app.special_requests or app.special_requests_text %}<p>Special Requests: {{ app.special_requests_repr }}</p>{% endif %}
 
 <p>
